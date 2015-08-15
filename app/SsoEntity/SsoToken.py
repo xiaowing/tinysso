@@ -74,29 +74,46 @@ class SSOToken():
             return None
 
     @classmethod
+    def __validateToken(cls, token):
+        if token == None:
+            raise ValueError("Null reference for token.")
+
+        if not isinstance(token, SSOToken):
+            raise TypeError("Incorrect type for token.")
+
+        if not token.__isTimeout():
+            return token
+        else:
+            try:
+                SSOToken.SSOTokenList.remove(token)
+            except ValueError as e:
+                pass
+            finally:
+                return False
+
+    @classmethod
     def ValidateTokenid(cls, tokenid):
         if not isinstance(tokenid, str):
             raise TypeError("Incorrect type for tokenid.")
 
         token = SSOToken.Find(tokenid)
         if token:
-            if not token.__isTimeout():
+            if SSOToken.__validateToken(token):
                 return token
-            else:
-                return False
-        else:
-            return False
+        return False
 
     @classmethod
     def ValidateTicket(cls, ticket):
         for item in SSOToken.SSOTokenList:
             if item.FindTicket(ticket):
-                target_token = item
-                new_ticket = item.ReplaceTicket(ticket)
-                if new_ticket != None:
-                    return (target_token, new_ticket)
-                else:
-                    return None
+                #target_token = item
+                if SSOToken.__validateToken(item):
+                    target_token = item
+                    new_ticket = item.ReplaceTicket(ticket)
+                    if new_ticket != None:
+                        return (target_token, new_ticket)
+                    else:
+                        return None
         else:
             return None
 
