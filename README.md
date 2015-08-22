@@ -13,6 +13,7 @@ A very simple SSO(i.e. Single Sign On) system based on the flask microframework.
 ####Test Program
 * .NET Framework 4.0
 * [Newtonsoft.Json 7.0.1](http://www.newtonsoft.com/json)
+  (If you want to build the test asp.net program, you'll need to place the Newtonsoft.Json dll file to test/lib first.)
 
 
 ###TODO
