@@ -26,7 +26,7 @@ class SSO_Api():
                 'valid': False
             }
 
-            return make_response(jsonify(validate_result), 404)
+            return make_response(jsonify(validate_result))
 
 
 
