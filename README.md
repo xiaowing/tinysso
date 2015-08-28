@@ -9,6 +9,7 @@ A very simple SSO(i.e. Single Sign On) system based on the flask microframework.
 * python(3.0+)
 * Flask (0.10.1+)
 * Flask-WTF (0.12+)
+* psycopg2 (2.6+)
 
 ####Test Program
 * .NET Framework 4.0
@@ -21,5 +22,7 @@ The following items need to be implemented in future.
 - [x] A client web application for the test.
 - [ ] The database access code for the actual user authentication while signing in.
 - [ ] A mechanism to certify the client applications.
+- [ ] A sign up logic.
+- [ ] The implementation of tinysso log.
 - [ ] The design of all the html pages.
 - [ ] The single sign out logic.
