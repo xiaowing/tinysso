@@ -12,6 +12,9 @@ def pwd_length_check(form, field):
     if len(field.data) > 16:
         raise ValidationError('Filed must be less than 16 characters.')
 
+    if not field.data.isalnum():
+        raise ValidationError('Username should only contains alphabets or digits')
+
 def name_input_check(form, field):
     if len(field.data) > 16:
         raise ValidationError('Filed must be less than 16 characters.')

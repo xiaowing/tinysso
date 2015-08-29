@@ -6,6 +6,7 @@
 from flask import request, redirect, make_response
 from app.sso import SSO_Page
 import app.SsoEntity.SsoToken as Token
+import app.SsoEntity.LoginUser as LoginUser
 
 class Login_Page():
     AUTH_CONST = { 'xiaowing':'asdf1234', 'postgres':'post1234'}
@@ -39,12 +40,17 @@ class Login_Page():
         return resp
 
 
-    # TODO: The following method needs to be rewritten with a database
     @classmethod
     def validate_login(cls, username, password):
-        if username in Login_Page.AUTH_CONST:
-            if Login_Page.AUTH_CONST[username] == password:
+        try:
+            sso_user = LoginUser.SsoUser()
+            sso_user.GetInfo(user=username, pwd=password)
+            if sso_user.username == username and sso_user.usermail != '':
                 return True
-        return False
+            else:
+                return False
+        except Exception as e:
+            # TODO: need to implement the following code with a customized error.
+            raise e
 
 

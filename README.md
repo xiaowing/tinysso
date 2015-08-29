@@ -20,7 +20,7 @@ A very simple SSO(i.e. Single Sign On) system based on the flask microframework.
 ###TODO
 The following items need to be implemented in future.
 - [x] A client web application for the test.
-- [ ] The database access code for the actual user authentication while signing in.
+- [x] The database access code for the actual user authentication while signing in.
 - [ ] A mechanism to certify the client applications.
 - [ ] A sign up logic.
 - [ ] The implementation of tinysso log.
