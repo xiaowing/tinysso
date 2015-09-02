@@ -64,7 +64,10 @@ target/
 *.user
 *.suo
 
-test/[Bb]in/
-test/[Oo]bj/
+*/[Bb]in/
+*/[Oo]bj/
+sdk/dotnet/*/[Bb]in/
+sdk/dotnet/*/[Oo]bj/
+sdk/dotnet/sample/lib/
 test/lib/
 test/packages/
