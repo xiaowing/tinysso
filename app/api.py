@@ -7,6 +7,8 @@ from flask import make_response, jsonify
 import app.SsoEntity.SsoToken as Token
 
 class SSO_Api():
+    PING_TOKEN = 'TSWC'
+
     @classmethod
     def ValidateTicket(cls, ticket_id):
         ret = Token.SSOToken.ValidateTicket(ticket_id)
@@ -27,6 +29,15 @@ class SSO_Api():
             }
 
             return make_response(jsonify(validate_result))
+
+    @classmethod
+    def Ping(cls, token):
+        if token != None:
+            if isinstance(token, str):
+                if token == SSO_Api.PING_TOKEN:
+                    return make_response('OK')
+
+        return make_response('NG', 400)
 
 
 

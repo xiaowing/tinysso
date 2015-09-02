@@ -3,7 +3,7 @@
 @license:   Apache Lincese 2.0 
 '''
 
-from flask import render_template, flash, redirect, abort, jsonify, send_from_directory
+from flask import render_template, flash, redirect, abort, jsonify, send_from_directory, request, make_response
 from app import app
 from app.sso import SSO_Page
 from app.login import Login_Page
@@ -54,6 +54,11 @@ def favicon():
 @app.route('/api/v1.0/validation/<ticket_id>', methods = ['GET'])
 def validate_ticket(ticket_id):
     return SSO_Api.ValidateTicket(ticket_id)
+
+@app.route('/api/v1.0/ping', methods = ['GET'])
+def ping():
+    token = request.args.get('token', '')
+    return SSO_Api.Ping(token)
 
 
 
