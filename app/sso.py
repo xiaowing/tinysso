@@ -19,17 +19,6 @@ class SSO_Page():
                     if len(tokenid) == 0:
                         raise ValueError()
                     else:
-                        '''token = Token.SSOToken(uname)
-                        Token.SSOToken.SSOTokenList.append(token)  # QUESTION: tokenID:Username = N : 1?
-                        dic = {'tokenid' : str(token.ID)}
-                        if returnUrl.find('?') >= 0:
-                            splitchr = '&'
-                        else:
-                            splitchr = '?'
-                        
-                        rtnUrl = returnUrl + splitchr + urllib.parse.urlencode(dic)
-                        return rtnUrl'''
-
                         token = Token.SSOToken.ValidateTokenid(tokenid)
                         if token != False:
                             ticket = token.AddNewTicket()

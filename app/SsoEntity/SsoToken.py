@@ -3,7 +3,9 @@
 @license:   Apache Lincese 2.0 
 '''
 
-import uuid, time
+import uuid, time, threading
+
+lock = threading.Lock()
 
 class SSOToken():
     SSOTokenList = []
@@ -42,7 +44,9 @@ class SSOToken():
 
     def AddNewTicket(self):
         new_ticket = uuid.uuid1().hex
-        self.__tickets.append(new_ticket)
+        if lock.acquire():
+            self.__tickets.append(new_ticket)
+            lock.release()
         return new_ticket
 
     def FindTicket(self, ticket):
@@ -58,9 +62,11 @@ class SSOToken():
     def ReplaceTicket(self, oldTicket):
         try:
             idx = self.__tickets.index(oldTicket)
-            del self.__tickets[idx]
-            new_ticket = uuid.uuid1().hex
-            self.__tickets.append(new_ticket)
+            if lock.acquire():
+                del self.__tickets[idx]
+                new_ticket = uuid.uuid1().hex
+                self.__tickets.append(new_ticket)
+                lock.release()
             return new_ticket
         except Exception as e:
             return None
@@ -85,11 +91,25 @@ class SSOToken():
             return token
         else:
             try:
-                SSOToken.SSOTokenList.remove(token)
+                if lock.acquire():
+                    SSOToken.SSOTokenList.remove(token)
+                    lock.release()
             except ValueError as e:
                 pass
             finally:
                 return False
+
+    @classmethod
+    def AddToken(cls, token):
+        if token == None:
+            raise ValueError("Null reference for token.")
+
+        if not isinstance(token, SSOToken):
+            raise TypeError("Incorrect type for token.")
+
+        if lock.acquire():
+            SSOToken.SSOTokenList.append(token)
+            lock.release()
 
     @classmethod
     def ValidateTokenid(cls, tokenid):

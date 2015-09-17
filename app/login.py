@@ -25,7 +25,7 @@ class Login_Page():
             raise ValueError("The username or the password is incorrect.")
 
         token = Token.SSOToken(username)
-        Token.SSOToken.SSOTokenList.append(token)
+        Token.SSOToken.AddToken(token)
         #token.AddNewTicket()
 
         cookie_value = SSO_Page.SecurityValidationKey + SSO_Page.AuthTktUserdataDelimiter + token.ID
