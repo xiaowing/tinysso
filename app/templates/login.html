@@ -2,24 +2,29 @@
 {% extends "base.html" %}
  
 {% block content %}
-<h1>Login In</h1>
-<form action="" method="post" name="login">
-    {{form.hidden_tag()}}
-    <p>
-        Login ID:<br>
-        {{form.userid(size=80)}}
-        {% for error in form.errors.userid %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-    </p>
-    <p>
-        Password:<br>
-        {{form.pwd(size=80)}}
-        {% for error in form.errors.pwd %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-    </p>
-    <!--<p>{{form.remember_me}} Remember Me</p>-->
-    <p><input type="submit" value="Login"></p>
-</form>
+<div class="container">
+    <form class="form-signin" role="form" action="" method="post" name="login">
+        <h2 class="form-signin-heading">Welcome to Tinysso</h2>
+        {{form.hidden_tag()}}
+        <p>
+            Login ID:<br>
+            {{form.userid(size=38)}}
+            {% for error in form.errors.userid %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            Password:<br>
+            {{form.pwd(size=38)}}
+            {% for error in form.errors.pwd %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}<br>
+        </p>
+        <!--<p>{{form.remember_me}} Remember Me</p>-->
+        <p>
+            <!--<input type="submit" value="Login">-->
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+        </p>
+    </form>
+</div>
 {% endblock %}
