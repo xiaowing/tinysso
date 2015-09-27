@@ -6,14 +6,17 @@
 '''The extension of flask "flask.ext.wtf" needs to be installed first.'''
 from flask.ext.wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, ValidationError
-from wtforms.validators import Required
+from wtforms.validators import Required, Email, EqualTo
 
 def pwd_length_check(form, field):
     if len(field.data) > 16:
         raise ValidationError('Filed must be less than 16 characters.')
 
     if not field.data.isalnum():
-        raise ValidationError('Username should only contains alphabets or digits')
+        raise ValidationError('Password should only contains alphabets or digits')
+
+    if field.data.isalpha() or field.data.isdigit():
+        raise ValidationError('Password should contains both alphabets and digits')
 
 def name_input_check(form, field):
     if len(field.data) > 16:
@@ -27,3 +30,10 @@ class LoginForm(Form):
     userid = TextField('userid', validators = [Required(), name_input_check])
     pwd = PasswordField('pwd', validators = [Required(), pwd_length_check])
     #remember_me = BooleanField('remember_me', default = False)
+
+class SignupForm(Form):
+    account = TextField('account', validators = [Required(), name_input_check])
+    pwd = PasswordField('pwd', validators = [Required(), pwd_length_check])
+    cfmpwd = PasswordField('cfmpwd', validators = [Required(), EqualTo('pwd')])
+    email = TextField('email', validators = [Required(), Email()])
+    cfmemail = TextField('cfmemail', validators = [Required(), EqualTo('email')])

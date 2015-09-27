@@ -7,7 +7,7 @@ from flask import render_template, flash, redirect, abort, jsonify, send_from_di
 from app import app
 from app.sso import SSO_Page
 from app.login import Login_Page
-from app.forms import LoginForm
+from app.forms import LoginForm, SignupForm
 from app.api import SSO_Api
 
 import os
@@ -36,6 +36,19 @@ def login():
         title = 'Sign In',
         form = form)
 
+@app.route('/signup', methods = ['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    try:
+        if form.validate_on_submit():
+            pass
+    except ValueError:
+        about(401)
+
+    return render_template('signup.html',
+        title = 'Sign Up', 
+        form = form)
+
 @app.route('/default')
 def default():
     abort(404)
@@ -46,7 +59,7 @@ def error():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
+    return send_from_directory(os.path.join(app.root_path, 'static', 'img'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
