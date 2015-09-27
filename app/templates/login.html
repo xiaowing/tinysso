@@ -7,15 +7,13 @@
         <h2 class="form-signin-heading">Welcome to Tinysso</h2>
         {{form.hidden_tag()}}
         <p>
-            Login ID:<br>
-            {{form.userid(size=38)}}
+            <!--Login ID:<br>-->
+            {{form.userid(class="form-control", placeholder="Login ID")}}
             {% for error in form.errors.userid %}
             <span style="color: red;">[{{error}}]</span>
             {% endfor %}<br>
-        </p>
-        <p>
-            Password:<br>
-            {{form.pwd(size=38)}}
+            <!--Password:<br>-->
+            {{form.pwd(class="form-control", placeholder="Password")}}
             {% for error in form.errors.pwd %}
             <span style="color: red;">[{{error}}]</span>
             {% endfor %}<br>
