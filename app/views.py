@@ -7,10 +7,13 @@ from flask import render_template, flash, redirect, abort, jsonify, send_from_di
 from app import app
 from app.sso import SSO_Page
 from app.login import Login_Page
+from app.signup import Signup_Page
 from app.forms import LoginForm, SignupForm
 from app.api import SSO_Api
 
 import os
+# TODO: The following import should be removed because of the wrong layer of the logic
+import psycopg2
 
 @app.route('/')
 @app.route('/sso')
@@ -41,9 +44,14 @@ def signup():
     form = SignupForm()
     try:
         if form.validate_on_submit():
-            pass
+            Signup_Page.signup_clicked(form.account.data, form.pwd.data, form.email.data)
+            flash("Sign-up successed.")
+            return redirect('/login')
     except ValueError:
-        about(401)
+        abort(401)
+    except psycopg2.DatabaseError as dberror:
+        flash(dberror.pgerror)
+        return redirect('/signup')
 
     return render_template('signup.html',
         title = 'Sign Up', 

@@ -39,3 +39,14 @@ class SSOUserAccess(DbUtil):
                 res = cur.fetchone()
                 cur.close()
                 return res[0]
+
+    def AddUser(self, username, password, email):
+        if self.conn != None:
+            if isinstance(self.conn, psycopg2.extensions.connection):
+                try:
+                    cur = self.conn.cursor()
+                    cur.execute("INSERT INTO m_sch.m_user_auth (user_id, user_password, user_mail, user_actived) VALUES (%(uname)s, %(pwd)s, %(email)s, true);",
+                        {'uname': username, 'pwd': password, 'email': email})
+                    cur.close()
+                except psycopg2.DatabaseError as dberror:
+                    raise dberror

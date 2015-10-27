@@ -23,6 +23,19 @@ class SsoUser():
             # TODO: need to implement the following code with a customized error.
             raise ValueError("No result retrieved from database.")
 
+    @classmethod
+    def CreateNewUser(cls, user, pwd, email):
+        access = SSOUserAccess()
+        access.OpenDbConnection()
+        access.AddUser(username=user, password=pwd, email=email)
+        access.CloseDbConnection()
+
 if __name__ == '__main__':
-    user = SsoUser('xiaowing', 'asdf1234')
-    print("username = %s, email = %s" %(user.username, user.usermail))
+    u = 'xyz'
+    p = 'pass1234'
+    m = 'test@xyz.com'
+
+    SsoUser.CreateNewUser(user=u, pwd=p, email=m)
+    user = SsoUser()
+    mail = user.GetInfo(user=u, pwd=p)
+    print("mail=%s, assert result=%s" %(mail, (mail == m)))
