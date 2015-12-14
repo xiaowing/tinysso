@@ -1,6 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyproj
+tinysso.sln
+web.config
 
 # C extensions
 *.so
@@ -64,6 +67,8 @@ target/
 *.user
 *.suo
 
+[Bb]in/
+[Oo]bj/
 */[Bb]in/
 */[Oo]bj/
 sdk/dotnet/*/[Bb]in/
