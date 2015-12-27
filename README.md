@@ -14,9 +14,14 @@ A very simple SSO(i.e. Single Sign On) system based on the flask microframework.
 * psycopg2 (2.6+)
 
 ####Test Program
+#####.NET SDK & Sample
 * .NET Framework 4.0
 * [Newtonsoft.Json 7.0.1](http://www.newtonsoft.com/json)
   (If you want to build the test asp.net program, you'll need to place the Newtonsoft.Json dll file to test/lib first.)
+
+#####Python SDK & Sample
+* python(3.0+)
+* Flask (0.10.1+)
 
 
 ###TODO
