@@ -28,19 +28,23 @@ def index():
             executor = tinyssocl.Executor(Tinysso_Server, Tinysso_Client)
         else:
             executor = Api_Executor
-        ticket = request.args.get("ticket")
-        if ticket != None:
-            if isinstance(ticket, str) and ticket != "":
-                rtn_json = executor.ValidateTicket(ticket)
+        ticket_id = request.args.get("ticket")
+        if ticket_id != None:
+            if isinstance(ticket_id, str) and ticket_id != "":
+                rtn_json = executor.ValidateTicket(ticket_id)
                 if rtn_json != None and rtn_json != "":
                     result = json.loads(rtn_json)
                     if isinstance(result['valid'], bool) and result['valid'] == True:
                         username = result['user']
                         session['UserName'] = username
                         display = str("Already signed in. The current user is %s." %(username))
-                        return render_template("index.html", label = display)
                     else:
-                        display = "Hello World!"
-                        return render_template("index.html", label = display)
+                        display = "Error: Validation Failed!"
+                else:
+                    display = "Error: Http request error."
+            else:
+                display = "Error: Incorrect ticket."
 
-        return redirect(executor.GenerateSsoRedirectUrl())
+            return render_template("index.html", label = display)
+        else:
+            return redirect(executor.GenerateSsoRedirectUrl())

@@ -72,11 +72,16 @@ namespace Tinysso.Client
 
         public string ValidateTicket(string ticket)
         {
-            Queue<string> paramQueue = new Queue<string>();
-            paramQueue.Enqueue(ticket);
+            if(string.IsNullOrEmpty(ticket))
+            {
+                throw new TinyssoClientException(3, "Invalid ticket.");
+            }
+
+            Dictionary<string, string> query = new Dictionary<string, string>();
+            query.Add("ticket", ticket);
 
             string validate_url = AppendUrlWithSlash(this.SsoServerUrl, Executor.VALIDATE_API_PATH);
-            return CallGetRestfulAPI(validate_url, paramQueue);
+            return CallGetRestfulAPI(validate_url, null, query);
         }
 
         private bool PingSsoServer()
@@ -102,11 +107,19 @@ namespace Tinysso.Client
                 return false;
         }
 
-        private string CallGetRestfulAPI(string url, Queue<string> restful_parameters)
+        private string CallGetRestfulAPI(string url, Queue<string> restful_parameters = null, Dictionary<string, string> query_params = null)
         {
-            for (int i = 0; i < restful_parameters.Count; i++)
+            if (restful_parameters != null)
             {
-                url = AppendUrlWithSlash(url, restful_parameters.Dequeue());
+                for (int i = 0; i < restful_parameters.Count; i++)
+                {
+                    url = AppendUrlWithSlash(url, restful_parameters.Dequeue());
+                }
+            }
+
+            if (query_params != null)
+            {
+                url = DataToUrl(url, query_params);
             }
 
             string rtn_json = string.Empty;
@@ -135,6 +148,31 @@ namespace Tinysso.Client
             }
 
             return srcUrl;
+        }
+
+        private string DataToUrl(string url, IEnumerable<KeyValuePair<string, string>> data)
+        {
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            bool first = true;
+            var sb = new StringBuilder(url);
+            foreach (var item in data)
+            {
+                if (first)
+                {
+                    sb.Append('?');
+                    first = false;
+                }
+                else
+                {
+                    sb.Append('&');
+                }
+
+                sb.Append(Uri.EscapeDataString(item.Key) + "=" + Uri.EscapeDataString(item.Value));
+            }
+
+            return sb.ToString();
         }
     }
 }

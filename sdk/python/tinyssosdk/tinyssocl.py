@@ -7,7 +7,7 @@ import requests, urllib.parse
 
 class Executor():
     PING_API_PATH = "api/v1.0/ping"
-    VALIDATE_API_PATH = "api/v1.0/validation/"
+    VALIDATE_API_PATH = "api/v1.0/validation"
     SSO_PAGE_PATH = "sso"
     NEGO_TOKEN = "TSWC"
 
@@ -35,16 +35,13 @@ class Executor():
         url = url + "?" + urllib.parse.urlencode(query)
         return url
 
-    def ValidateTicket(self, ticket):
-        if ticket == None:
-            raise ValueError("Ticket cannot be null.")
+    def ValidateTicket(self, ticket_id):
+        if not ticket_id:
+            raise ValueError("Ticket must be specified.")
 
-        if isinstance(ticket, str):
-            urlparams = []
-            urlparams.append(ticket)
-            urlparamsTuple = tuple(urlparams)
+        if isinstance(ticket_id, str):
             apiPath = urllib.parse.urljoin(self.__Ssosv_url, Executor.VALIDATE_API_PATH)
-            return Executor.__CallGetRestfulApi(apiPath, parameters = urlparamsTuple, queryparams = None)
+            return Executor.__CallGetRestfulApi(apiPath, parameters = None, ticket = ticket_id)
         else:
             raise TypeError("Ticket must be string.")
 
@@ -62,8 +59,6 @@ class Executor():
 
     @classmethod
     def __CallGetRestfulApi(cls, url, parameters = None, **queryparams):
-        # For debug
-        # raise ValueError("url value: %s" %(url))
         callingurl = url
         if queryparams != None:
             if not isinstance(queryparams, dict):
@@ -77,7 +72,7 @@ class Executor():
                 if isinstance(parameters, str):
                     callingurl = urllib.parse.urljoin(url, parameters)
         else:
-            raise TypeError("type(element): %s is not a tuple" %(type(element)))
+            pass
 
         if not queryparams:
             r = requests.get(callingurl, params = None)

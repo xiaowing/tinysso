@@ -72,9 +72,15 @@ def favicon():
 
 
 # REST API
-@app.route('/api/v1.0/validation/<ticket_id>', methods = ['GET'])
-def validate_ticket(ticket_id):
-    return SSO_Api.ValidateTicket(ticket_id)
+@app.route('/api/v1.0/validation', methods = ['GET'])
+def validate_ticket():
+    ticket_id = request.args.get("ticket")
+    if ticket_id != None:
+        if isinstance(ticket_id, str) and ticket_id != "":
+            return SSO_Api.ValidateTicket(ticket_id)
+        else:
+            pass
+    abort(400)
 
 @app.route('/api/v1.0/ping', methods = ['GET'])
 def ping():
