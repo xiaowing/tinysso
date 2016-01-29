@@ -4,16 +4,22 @@
 '''
 
 import psycopg2
+import sys
+sys.path.append('...')
+import settings
 
 class DbUtil():
-    __CONNECTION_STRING = "host=192.168.1.128 port=26500 dbname=postgres user=postgres password=asdf1234"
-
     def __init__(self):
         self.conn = None
+        self.config = settings.TinyssoSettings()
 
     def OpenDbConnection(self):
         try:
-            self.conn = psycopg2.connect(DbUtil.__CONNECTION_STRING)
+            self.conn = psycopg2.connect(host = self.config.getPgHost(),
+                                         port = self.config.getPgPort(),
+                                         database = self.config.getPgDatabase(),
+                                         user = self.config.getPgUser(),
+                                         password = self.config.getPgUserPassword())
             self.conn.autocommit = True
             return self.conn
         except psycopg2.DatabaseError as dberror:
